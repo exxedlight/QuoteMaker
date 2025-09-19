@@ -1,11 +1,12 @@
-.result{
+.result {
     position: relative;
     overflow: hidden;
     width: 640px;
 
     max-height: 640px;
 
-    .background, .additional-img{
+    .background,
+    .additional-img {
         top: 0;
         left: 0;
         width: auto;
@@ -15,49 +16,50 @@
         max-height: 600px;
     }
 
-    .background{
+    .background {
         z-index: 10;
         object-fit: contain;
         background-color: black;
     }
-    .additional-img{
+
+    .additional-img {
         position: absolute;
         z-index: 11;
-        opacity: 1;
         object-fit: contain;
     }
 
-    .quote, .author-work{
+    .quote,
+    .author-work {
         position: absolute;
         z-index: 12;
-        background: linear-gradient(to top right, rgba(0,0,0,.5), transparent);
+        background: linear-gradient(to top right, rgba(0, 0, 0, .5), transparent);
         padding: 5px;
         border-radius: 10px;
         text-shadow: 0 5px 5px black;
     }
 
-    .author-work{
+    .author-work {
         display: flex;
         flex-direction: column;
         bottom: 30px;
         right: 30px;
 
-        .author{
+        .author {
             font-weight: bold;
             text-align: right;
             font-size: 1.2em;
         }
-        .work-name{
+
+        .work-name {
             font-style: italic;
             font-size: 1.1em;
         }
     }
 
-    .quote{
+    .quote {
         top: 5%;
         left: 50%;
         font-size: 3em;
         width: 90%;
-        transform: translateX(-50%);
     }
 }

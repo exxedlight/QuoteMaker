@@ -3,35 +3,35 @@ import Header from "@/components/Header";
 import "./style.css";
 import "./result-style.css";
 import Selector from "@/components/Selector";
-import { ChangeEvent, useRef, useState } from "react";
+import { useState } from "react";
+import BackgroundControls from "@/components/BackgroundControls";
+import QuoteResult from "@/components/QuoteResult";
+import { EditorParams } from "@/data/editorParams";
+import TextControls from "@/components/TextControls";
 
 export default function Home() {
 
-  const [author, setAuthor] = useState("");
-  const [workName, setWorkName] = useState("");
-  const [quote, setQuote] = useState("");
-
-  const [backgroundImgPreview, setBackgroundImgPreview] = useState<string | null>(null);
-  const [additionalImgPreview, setAdditionalImgPreview] = useState<string | null>(null);
-  const backgroundARef = useRef<HTMLInputElement | null>(null);
-  const additionalImgARef = useRef<HTMLInputElement | null>(null);
-
-  const handleImageChange = (event: ChangeEvent<HTMLInputElement>, setter: React.Dispatch<React.SetStateAction<string | null>>) => {
-    const file = event.target.files?.[0] || null;
-
-    if(!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      alert('Пожалуйста, выберите файл изображения');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setter(reader.result as string);
-    }
-    reader.readAsDataURL(file);
-  }
+  const [editorParams, setEditorParams] = useState<EditorParams>({
+    author: "",
+    workName: "",
+    quote: "",
+    backgroundPreview: null,
+    additionalImgPreview: null,
+    additionalImgOffsetX: 0,
+    additionalImgOffsetY: 0,
+    additionalImgSizeW: 0,
+    additionalImgSizeH: 0,
+    additionalImgTransparency: 1,
+    authorOffsetX: null,
+    authorOffsetY: null,
+    authorFontSize: null,
+    workNameOffsetX: null,
+    workNameOffsetY: null,
+    workNameFontSize: null,
+    quoteOffsetX: null,
+    quoteOffsetY: null,
+    quoteFontSize: null,
+  });
 
   return (
     <div className="wrapper">
@@ -47,51 +47,52 @@ export default function Home() {
           <div className="controls">
 
             <Selector name="Border">
-              <label>1<input type="radio" name="border" /></label>
-              <label>2<input type="radio" name="border" /></label>
-              <label>3<input type="radio" name="border" /></label>
+              <div className="primary-controls">
+                <label>1<input type="radio" name="border" /></label>
+                <label>2<input type="radio" name="border" /></label>
+                <label>3<input type="radio" name="border" /></label>
+              </div>
+
             </Selector>
 
-            <Selector name="Background">
-              <button className="pick-button" onClick={_ => backgroundARef.current?.click()}>Pick</button>
-              <input type="file" accept="image/*" style={{display: "none"}} ref={backgroundARef} onChange={e => handleImageChange(e, setBackgroundImgPreview)}/>
-            </Selector>
-            
-            <Selector name="Additional image">
-              <button className="pick-button" onClick={_ => additionalImgARef.current?.click()}>Pick</button>
-              <input type="file" accept="image/*" style={{display: "none"}} ref={additionalImgARef} onChange={e => handleImageChange(e, setAdditionalImgPreview)}/>
-            </Selector>
+            <BackgroundControls
+              name="Primary background"
+              setParams={setEditorParams}
+              fieldName="backgroundPreview"
+              useAdditionalControls={false}
+              params={editorParams}
+            />
 
-            <div className="text-inputs">
+            <BackgroundControls
+              name="Additional img"
+              setParams={setEditorParams}
+              fieldName="additionalImgPreview"
+              useAdditionalControls={true}
+              params={editorParams}
+            />
+
+            {/*<div className="text-inputs">
               <label>Quote</label>
-              <textarea className="quote-text-area" value={quote} onChange={e => setQuote(e.target.value)}/>
+              <textarea className="quote-text-area" value={editorParams.quote} onChange={e => setEditorParams(prev => ({ ...prev, quote: e.target.value }))} />
               <label>Author</label>
-              <input type="text" value={author} onChange={e => setAuthor(e.target.value)}/>
+              <input type="text" value={editorParams.author} onChange={e => setEditorParams(prev => ({ ...prev, author: e.target.value }))} />
               <label>Work</label>
-              <input type="text" value={workName} onChange={e => setWorkName(e.target.value)}/>
-            </div>
-            
+              <input type="text" value={editorParams.workName} onChange={e => setEditorParams(prev => ({ ...prev, workName: e.target.value }))} />
+            </div>*/}
+
+            <TextControls
+              params={editorParams}
+              setParams={setEditorParams}
+              />
+
 
           </div>
 
         </div>
 
-        <div className="result">
-          <label className="quote ephesis-regular">{quote}</label>
-
-          <div className="author-work">
-            <label className="author">{author}</label>
-            <label className="work-name">{workName}</label>
-          </div>
-          
-
-          {backgroundImgPreview && (
-            <img className="background" src={backgroundImgPreview}/>
-          )}
-          {additionalImgPreview && (
-            <img className="additional-img" src={additionalImgPreview}/>
-          )}          
-        </div>
+        <QuoteResult
+          {...editorParams}
+        />
 
       </div>
 

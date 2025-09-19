@@ -1,4 +1,5 @@
 
+import "./styles/selector.css";
 
 export interface SelectorProps {
     name: string;
@@ -12,7 +13,7 @@ const Selector = (
 ) => {
     return (
         <div className="selector">
-            <div>
+            <div className="name">
                 <span>{name}</span>
             </div>
             <div className="options">

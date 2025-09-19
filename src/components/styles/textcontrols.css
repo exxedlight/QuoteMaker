@@ -1,0 +1,62 @@
+.text-inputs{
+    width: 90%;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    border: 1px solid gray;
+    box-shadow: 0 0 3px rgb(26, 154, 158);
+
+    .quote-text-area, .base-input{
+        margin-bottom: 5px;
+        background-color: transparent;
+        color: white;
+        border-radius: 10px;
+        width: 100%;
+        outline: rgb(109, 72, 109) solid 1px;
+    }
+    .quote-text-area{
+        padding: 10px;
+        min-height: 100px;
+        resize: none;
+        margin-bottom: 5px;
+    }
+    input{
+        padding: 0 10px;
+        font-size: 1.05em;
+    }
+    label{
+        padding-left: 10px;
+        font-style: italic;
+        font-size: .8em;
+        color: silver;
+    }
+}
+
+.controls-block{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .inputs{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        width: 50%;
+
+        label{
+            font-size: 1.3em;
+            padding: 0;
+            font-family: monospace;
+            font-style: normal;
+        }
+        input{
+            width: 35%;
+            font-size: .8em;
+            padding: 0;
+            text-align: center;
+        }
+    }
+}
