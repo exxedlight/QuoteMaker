@@ -8,7 +8,7 @@ const QuoteResult = (
           <label 
             className="quote ephesis-regular"
             style={{
-              left: params.quoteOffsetX ?? "50%",
+              left: params.quoteOffsetX ?? "5%",
               top: params.quoteOffsetY ?? "5%",
             }}>
             {params.quote}
