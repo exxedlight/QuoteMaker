@@ -1,95 +1,100 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import Header from "@/components/Header";
+import "./style.css";
+import "./result-style.css";
+import Selector from "@/components/Selector";
+import { ChangeEvent, useRef, useState } from "react";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+  const [author, setAuthor] = useState("");
+  const [workName, setWorkName] = useState("");
+  const [quote, setQuote] = useState("");
+
+  const [backgroundImgPreview, setBackgroundImgPreview] = useState<string | null>(null);
+  const [additionalImgPreview, setAdditionalImgPreview] = useState<string | null>(null);
+  const backgroundARef = useRef<HTMLInputElement | null>(null);
+  const additionalImgARef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>, setter: React.Dispatch<React.SetStateAction<string | null>>) => {
+    const file = event.target.files?.[0] || null;
+
+    if(!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Пожалуйста, выберите файл изображения');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setter(reader.result as string);
+    }
+    reader.readAsDataURL(file);
+  }
+
+  return (
+    <div className="wrapper">
+
+      <Header />
+
+
+      <div className="constructor">
+
+        <div className="editor">
+          <h3 className="fascinate-regular">EDITOR</h3>
+
+          <div className="controls">
+
+            <Selector name="Border">
+              <label>1<input type="radio" name="border" /></label>
+              <label>2<input type="radio" name="border" /></label>
+              <label>3<input type="radio" name="border" /></label>
+            </Selector>
+
+            <Selector name="Background">
+              <button className="pick-button" onClick={_ => backgroundARef.current?.click()}>Pick</button>
+              <input type="file" accept="image/*" style={{display: "none"}} ref={backgroundARef} onChange={e => handleImageChange(e, setBackgroundImgPreview)}/>
+            </Selector>
+            
+            <Selector name="Additional image">
+              <button className="pick-button" onClick={_ => additionalImgARef.current?.click()}>Pick</button>
+              <input type="file" accept="image/*" style={{display: "none"}} ref={additionalImgARef} onChange={e => handleImageChange(e, setAdditionalImgPreview)}/>
+            </Selector>
+
+            <div className="text-inputs">
+              <label>Quote</label>
+              <textarea className="quote-text-area" value={quote} onChange={e => setQuote(e.target.value)}/>
+              <label>Author</label>
+              <input type="text" value={author} onChange={e => setAuthor(e.target.value)}/>
+              <label>Work</label>
+              <input type="text" value={workName} onChange={e => setWorkName(e.target.value)}/>
+            </div>
+            
+
+          </div>
+
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <div className="result">
+          <label className="quote ephesis-regular">{quote}</label>
+
+          <div className="author-work">
+            <label className="author">{author}</label>
+            <label className="work-name">{workName}</label>
+          </div>
+          
+
+          {backgroundImgPreview && (
+            <img className="background" src={backgroundImgPreview}/>
+          )}
+          {additionalImgPreview && (
+            <img className="additional-img" src={additionalImgPreview}/>
+          )}          
+        </div>
+
+      </div>
+
     </div>
   );
 }
